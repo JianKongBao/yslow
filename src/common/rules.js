@@ -39,7 +39,7 @@
 //
 YSLOW.registerRule({
     id: 'ynumreq',
-    //name: ‘减少HTTP请求次数,
+    //name: '减少HTTP请求次数',
     url: 'http://developer.yahoo.com/performance/rules.html#num_http',
     category: ['content'],
 
@@ -66,15 +66,15 @@ YSLOW.registerRule({
 
         if (js > 0) {
             score -= js * config.points_js;
-            messages[messages.length] = 'This page has ' + YSLOW.util.plural('%num% external Javascript script%s%', (js + config.max_js)) + '.  Try combining them into one.';
+            messages[messages.length] = '这个页面有' + YSLOW.util.plural('%num%个JS文件%s%', (js + config.max_js)) + '. 请尝试合并它们。';
         }
         if (css > 0) {
             score -= css * config.points_css;
-            messages[messages.length] = 'This page has ' + YSLOW.util.plural('%num% external stylesheet%s%', (css + config.max_css)) + '.  Try combining them into one.';
+            messages[messages.length] = '这个页面有' + YSLOW.util.plural('%num%个样式表%s%', (css + config.max_css)) + '.  请尝试合并它们。';
         }
         if (cssimg > 0) {
             score -= cssimg * config.points_cssimages;
-            messages[messages.length] = 'This page has ' + YSLOW.util.plural('%num% external background image%s%', (cssimg + config.max_cssimages)) + '.  Try combining them with CSS sprites.';
+            messages[messages.length] = '这个页面有' + YSLOW.util.plural('%num%个背景图片%s%', (cssimg + config.max_cssimages)) + '.  请尝试使用CSS精灵合并它们。';
         }
 
         return {
@@ -87,7 +87,7 @@ YSLOW.registerRule({
 
 YSLOW.registerRule({
     id: 'ycdn',
-    //name: ‘使用’CDN,
+    //name: '使用CDN',
     url: 'http://developer.yahoo.com/performance/rules.html#cdn',
     category: ['server'],
 
@@ -226,12 +226,11 @@ YSLOW.registerRule({
         offenders.concat(exceptions);
 
         if (offenders.length > 0) {
-            message = plural('There %are% %num% static component%s% ' +
-                'that %are% not on CDN. ', offenders.length);
+            message = plural('有%num%个静态资源' +
+                '没有通过CDN加速', offenders.length);
         }
         if (exceptions.length > 0) {
-            message += plural('There %are% %num% component%s% that %are% not ' +
-                'on CDN, but %are% exceptions:', exceptions.length) + '<ul>';
+            message += plural('有%num%个例外中的资源没有使用CDN:', exceptions.length) + '<ul>';
             for (i = 0, len = offenders.length; i < len; i += 1) {
                 message += '<li>' + util.prettyAnchor(exceptions[i].url,
                     exceptions[i].url, null, true, 120, null,
@@ -241,13 +240,13 @@ YSLOW.registerRule({
         }
 
         if (userCdns) {
-            message += '<p>Using these CDN hostnames from your preferences: ' +
+            message += '<p>使用了你配置中的CDN主机: ' +
                 userCdns + '</p>';
         } else {
-            message += '<p>You can specify CDN hostnames in your ' +
-                'preferences. See <a href="javascript:document.ysview.' +
+            message += '<p>你可以在配置中指定CDN主机' +
+                '参见<a href="javascript:document.ysview.' +
                 'openLink(\'http://yslow.org/faq/#faq_cdn\')">YSlow FAQ</a> ' +
-                'for details.</p>';
+                '.</p>';
         }
 
         // list unique domains only to avoid long list of offenders
@@ -263,7 +262,7 @@ YSLOW.registerRule({
                         kbSize(offender.sum_size_compressed) + ' GZip)' : ''
                     ) + (hasPref ? (
                     ' <button onclick="javascript:document.ysview.addCDN(\'' +
-                    offender.domain + '\')">Add as CDN</button>') : '');
+                    offender.domain + '\')">添加到CDN</button>') : '');
             }
         }
 
@@ -315,9 +314,9 @@ YSLOW.registerRule({
         return {
             score: score,
             message: (offenders.length > 0) ? YSLOW.util.plural(
-                'There %are% %num% static component%s%',
+                '存在%num%个静态资源%s%',
                 offenders.length
-            ) + ' without a far-future expiration date.' : '',
+            ) + ' 没有设置正确的过期时间' : '',
             components: offenders
         };
     }
@@ -356,9 +355,9 @@ YSLOW.registerRule({
         return {
             score: score,
             message: (offenders.length > 0) ? YSLOW.util.plural(
-                'There %are% %num% plain text component%s%',
+                '有%num%个静态资源',
                 offenders.length
-            ) + ' that should be sent compressed' : '',
+            ) + ' 应该被压缩' : '',
             components: offenders
         };
     }
@@ -396,9 +395,9 @@ YSLOW.registerRule({
         return {
             score: score,
             message: (offenders.length > 0) ? YSLOW.util.plural(
-                'There %are% %num% stylesheet%s%',
+                '有%num%个样式表',
                 offenders.length
-            ) + ' found in the body of the document' : '',
+            ) +'存在于HTML Body中': '',
             components: offenders
         };
     }
@@ -434,9 +433,9 @@ YSLOW.registerRule({
             score: score,
             message: (offenders.length > 0) ?
                 YSLOW.util.plural(
-                    'There %are% %num% JavaScript script%s%',
+                    '有%num%个JS脚本文件',
                     offenders.length
-                ) + ' found in the head of the document' : '',
+                ) + '在Head中被引入' : '',
             components: offenders
         };
     }
@@ -472,7 +471,7 @@ YSLOW.registerRule({
             // offence
             if (expr_count > 0) {
                 comp.yexpressions = YSLOW.util.plural(
-                    '%num% expression%s%',
+                    '%num%个表达式',
                     expr_count
                 );
                 total += expr_count;
@@ -483,9 +482,9 @@ YSLOW.registerRule({
         for (i = 0, len = instyles.length; i < len; i += 1) {
             expr_count = YSLOW.util.countExpressions(instyles[i].body);
             if (expr_count > 0) {
-                offenders.push('inline &lt;style&gt; tag #' + (i + 1) + ' (' +
+                offenders.push('内联 &lt;style&gt; 标记个数# ' + (i + 1) + ' (' +
                     YSLOW.util.plural(
-                        '%num% expression%s%',
+                        '%num%个表达式',
                         expr_count
                     ) + ')'
                     );
@@ -499,8 +498,8 @@ YSLOW.registerRule({
 
         return {
             score: score,
-            message: total > 0 ? 'There is a total of ' +
-                YSLOW.util.plural('%num% expression%s%', total) : '',
+            message: total > 0 ? 'CSS表达式总数：' +
+                YSLOW.util.plural('%num%', total) : '',
             components: offenders
         };
     }
@@ -522,7 +521,7 @@ YSLOW.registerRule({
 
         if (styles.length) {
             message = YSLOW.util.plural(
-                'There is a total of %num% inline css',
+                '内联的CSS代码块数: %num%',
                 styles.length
             );
             offenders.push(message);
@@ -530,7 +529,7 @@ YSLOW.registerRule({
 
         if (scripts.length) {
             message = YSLOW.util.plural(
-                'There is a total of %num% inline script%s%',
+                '内联JS脚本代码块数: %num%',
                 scripts.length
             );
             offenders.push(message);
@@ -538,7 +537,7 @@ YSLOW.registerRule({
 
         return {
             score: 'n/a',
-            message: 'Only consider this if your property is a common user home page.',
+            message: '仅在你的页面是一个通用用户首页的时候考虑此选项.',
             components: offenders
         };
     }
@@ -575,7 +574,7 @@ YSLOW.registerRule({
             for (i = 0, len = domains.length; i < len; i += 1) {
                 domain = domains[i];
                 domains[i] = domain.domain + ': ' +
-                    plural('%num% component%s%, ', domain.count) +
+                    plural('%num%个静态资源, ', domain.count) +
                     kbSize(domain.sum_size) + (
                         domain.sum_size_compressed > 0 ? ' (' +
                         kbSize(domain.sum_size_compressed) + ' GZip)' : ''
@@ -586,7 +585,7 @@ YSLOW.registerRule({
         return {
             score: score,
             message: (domains.length > config.max_domains) ? plural(
-                'The components are split over more than %num% domain%s%',
+                '静态资源分布在%num%个域名上',
                 config.max_domains
             ) : '',
             components: domains
@@ -634,12 +633,12 @@ YSLOW.registerRule({
         // check inline scripts/styles/whatever
         for (i = 0, len = styles.length; i < len; i += 1) {
             if (!YSLOW.util.isMinified(styles[i].body)) {
-                offenders.push('inline &lt;style&gt; tag #' + (i + 1));
+                offenders.push('内联 &lt;style&gt; 标记数量#' + (i + 1));
             }
         }
         for (i = 0, len = scripts.length; i < len; i += 1) {
             if (!YSLOW.util.isMinified(scripts[i].body)) {
-                offenders.push('inline &lt;script&gt; tag #' + (i + 1));
+                offenders.push('内联 &lt;script&gt; 标记数量#' + (i + 1));
             }
         }
 
@@ -647,7 +646,7 @@ YSLOW.registerRule({
 
         return {
             score: score,
-            message: (offenders.length > 0) ? YSLOW.util.plural('There %are% %num% component%s% that can be minified', offenders.length) : '',
+            message: (offenders.length > 0) ? YSLOW.util.plural('有%num%个静态资源文件可以被最小化', offenders.length) : '',
             components: offenders
         };
     }
@@ -671,7 +670,7 @@ YSLOW.registerRule({
 
         for (i = 0, len = comps.length; i < len; i += 1) {
             comp = comps[i];
-            offenders.push(briefUrl(comp.url, 80) + ' redirects to ' +
+            offenders.push(briefUrl(comp.url, 80) + ' 跳转到 ' +
                 briefUrl(comp.headers.location, 60));
         }
         score = 100 - comps.length * parseInt(config.points, 10);
@@ -679,7 +678,7 @@ YSLOW.registerRule({
         return {
             score: score,
             message: (comps.length > 0) ? YSLOW.util.plural(
-                'There %are% %num% redirect%s%',
+                '存在%num%个URL跳转',
                 comps.length
             ) : '',
             components: offenders
@@ -729,7 +728,7 @@ YSLOW.registerRule({
         return {
             score: score,
             message: (offenders.length > 0) ? YSLOW.util.plural(
-                'There %are% %num% duplicate component%s%',
+                '存在%num%个重复的静态资源',
                 offenders.length
             ) : '',
             components: offenders
@@ -769,7 +768,7 @@ YSLOW.registerRule({
         return {
             score: score,
             message: (offenders.length > 0) ? YSLOW.util.plural(
-                'There %are% %num% component%s% with misconfigured ETags',
+                '存在%num%个资源的ETags配置不正确',
                 offenders.length
             ) : '',
             components: offenders
@@ -825,7 +824,7 @@ YSLOW.registerRule({
         return {
             score: score,
             message: (offenders.length > 0) ? YSLOW.util.plural(
-                'There %are% %num% XHR component%s% that %are% not cacheable',
+                '存在%num%个XHR请求不能被缓存',
                 offenders.length
             ) : '',
             components: offenders
@@ -862,7 +861,7 @@ YSLOW.registerRule({
         return {
             score: score,
             message: (offenders.length > 0) ? YSLOW.util.plural(
-                'There %are% %num% XHR component%s% that %do% not use GET HTTP method',
+                '存在%num%个XHR请求没有使用GET方法',
                 offenders.length
             ) : '',
             components: offenders
@@ -897,7 +896,7 @@ YSLOW.registerRule({
         return {
             score: score,
             message: (numdom > config.maxdom) ? YSLOW.util.plural(
-                'There %are% %num% DOM element%s% on the page',
+                '该页面有%num%个DOM元素',
                 numdom
             ) : '',
             components: []
@@ -933,7 +932,7 @@ YSLOW.registerRule({
         return {
             score: score,
             message: (offenders.length > 0) ? YSLOW.util.plural(
-                'There %are% %num% request%s% that %are% 404 Not Found',
+                '有%num%个请求的结果是404',
                 offenders.length
             ) : '',
             components: offenders
@@ -965,7 +964,7 @@ YSLOW.registerRule({
             n = Math.floor(cookieSize / config.max_cookie_size);
             score -= 1 + n * parseInt(config.points, 10);
             message = YSLOW.util.plural(
-                'There %are% %num% byte%s% of cookies on this page',
+                '该页面的Cookie大小是%num%字节',
                 cookieSize
             );
         }
@@ -1017,7 +1016,7 @@ YSLOW.registerRule({
         return {
             score: score,
             message: (offenders.length > 0) ? YSLOW.util.plural(
-                'There %are% %num% component%s% that %are% not cookie-free',
+                '存在%num%个不是来自无Cookie域名的静态资源',
                 offenders.length
             ) : '',
             components: offenders
@@ -1069,7 +1068,7 @@ YSLOW.registerRule({
                 }
             }
             if (count > 0) {
-                comps[i].yfilters = YSLOW.util.plural('%num% filter%s%', count);
+                comps[i].yfilters = YSLOW.util.plural('%num% 滤镜', count);
                 offenders.push(comps[i]);
             }
         }
@@ -1089,8 +1088,8 @@ YSLOW.registerRule({
                 }
             }
             if (count > 0) {
-                offenders.push('inline &lt;style&gt; tag #' + (i + 1) + ' (' +
-                    YSLOW.util.plural('%num% filter%s%', count) + ')');
+                offenders.push('内联&lt;style&gt; 标记数量#' + (i + 1) + ' (' +
+                    YSLOW.util.plural('%num%滤镜', count) + ')');
             }
         }
 
@@ -1100,8 +1099,8 @@ YSLOW.registerRule({
         return {
             score: score,
             message: (filter_total + hack_filter_total) > 0 ?
-                'There is a total of ' + YSLOW.util.plural(
-                    '%num% filter%s%',
+                '有' + YSLOW.util.plural(
+                    '%num%个滤镜',
                     filter_total + hack_filter_total
                 ) : '',
             components: offenders
@@ -1142,7 +1141,7 @@ YSLOW.registerRule({
         return {
             score: score,
             message: (offenders.length > 0) ? YSLOW.util.plural(
-                'There %are% %num% image%s% that %are% scaled down',
+                '存在%num%个图片设置了页面内缩放',
                 offenders.length
             ) : '',
             components: offenders
@@ -1176,13 +1175,13 @@ YSLOW.registerRule({
 
             // check if favicon was found
             if (parseInt(comp.status, 10) === 404) {
-                messages.push('Favicon was not found');
+                messages.push('网站图标缺失');
             }
 
             // check size
             if (comp.size > config.size) {
                 messages.push(YSLOW.util.plural(
-                    'Favicon is more than %num% bytes',
+                    '网站图标大于%num%字节',
                     config.size
                 ));
             }
@@ -1196,7 +1195,7 @@ YSLOW.registerRule({
                 cacheable = expiration.getTime() >= ts + min;
             }
             if (!cacheable) {
-                messages.push('Favicon is not cacheable');
+                messages.push('网站图标不能被缓存');
             }
         }
         score = 100 - messages.length * parseInt(config.points, 10);
@@ -1236,7 +1235,7 @@ YSLOW.registerRule({
                 }
             }
             msg = messages.join(', ') + YSLOW.util.plural(
-                ' component%s% with empty link were found.',
+                '发现了链接为空的元素',
                 messages.length
             );
         }
