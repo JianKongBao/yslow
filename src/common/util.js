@@ -59,7 +59,7 @@ YSLOW.util = {
         try {
             if (typeof Firebug !== 'undefined' && Firebug.Console
                     && Firebug.Console.log) { // Firebug
-                Firebug.Console.log(args);
+//                Firebug.Console.log(args);
             } else if (typeof Components !== 'undefined' && Components.classes
                     && Components.interfaces) { // Firefox
                 Components.classes['@mozilla.org/consoleservice;1']
@@ -68,7 +68,7 @@ YSLOW.util = {
             }
         } catch (e1) {
             try {
-                console.log(args);
+ //               console.log(args);
             } catch (e2) {
                 // alert shouldn't be used due to its annoying modal behavior
             }

@@ -31,7 +31,8 @@ var i, arg, page, urlCount, viewport,
         headers: false,
         console: 0,
         threshold: 80,
-        cdns: ''
+        cdns: '',
+        millisec: 20000
     },
     unaryArgs = {
         help: false,
@@ -52,7 +53,8 @@ var i, arg, page, urlCount, viewport,
         b: 'beacon',
         v: 'verbose',
         t: 'threshold',
-        ch: 'headers'
+        ch: 'headers',
+        mt: "millisec"
     };
 
 // loop args
@@ -127,6 +129,7 @@ if (len === 0 || urlCount === 0 || unaryArgs.help) {
         '    phantomjs ' + phantom.scriptName + ' -i grade -b http://www.showslow.com/beacon/yslow/ -v yslow.org',
         '    phantomjs --load-plugins=yes ' + phantom.scriptName + ' -vp 800x600 http://www.yahoo.com',
         '    phantomjs ' + phantom.scriptName + ' -i grade -f tap -t 85 http://yslow.org',
+        '    phantomjs ' + phantom.scriptName + ' -i grade -mt 7000 http://yslow.org',
         ''
     ].join('\n'));
     phantom.exit();
@@ -140,20 +143,32 @@ yslowArgs.verbose = unaryArgs.verbose;
 urls.forEach(function (url) {
     var page = webpage.create();
 
+    page.settings.resourceTimeout = 5000;
+
     page.resources = {};
 
     // allow x-domain requests, used to retrieve components content
     page.settings.webSecurityEnabled = false;
 
     // request
-    page.onResourceRequested = function (req) {
+    var start = new Date().getTime();
+    page.onResourceRequested = function (req, networkRequest) {
         page.resources[req.url] = {
             request: req
         };
+        if(page.resources[req.url].request.time.getTime() - start > yslowArgs.millisec) {
+            networkRequest.abort();
+        }
     };
 
     // response
     page.onResourceReceived = function (res) {
+        if(typeof(page.resources[res.url]) == "undefined"){
+            page.resources[res.url] = "";
+            if(typeof(page.resources[res.url].response) == "undefined"){
+                page.resources[res.url].response = "";
+            }
+        }
         var info,
             resp = page.resources[res.url].response;
 
@@ -167,6 +182,8 @@ urls.forEach(function (url) {
             }
         }
     };
+
+    page.onError = function(msg, trace) {}
 
     // enable console output, useful for debugging
     yslowArgs.console = parseInt(yslowArgs.console, 10) || 0;
@@ -193,11 +210,7 @@ urls.forEach(function (url) {
                 }));
             };
         }
-    } else {
-        page.onError = function () {
-            // catch uncaught error from the page
-        };
-    }
+    } else {}
 
     // set user agent string
     if (yslowArgs.ua) {
@@ -406,7 +419,7 @@ urls.forEach(function (url) {
                                     res.request = request;
 
                                 } catch (err) {
-                                    console.log(err);
+//                                    console.log(err);
                                 }
                             }
 
