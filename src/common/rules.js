@@ -66,15 +66,15 @@ YSLOW.registerRule({
 
         if (js > 0) {
             score -= js * config.points_js;
-            messages[messages.length] = '这个页面有' + YSLOW.util.plural('%num%个JS文件%s%', (js + config.max_js)) + '. 请尝试合并它们。';
+            messages[messages.length] = '这个页面有' + YSLOW.util.plural('%num%个JS文件', (js + config.max_js));
         }
         if (css > 0) {
             score -= css * config.points_css;
-            messages[messages.length] = '这个页面有' + YSLOW.util.plural('%num%个样式表%s%', (css + config.max_css)) + '.  请尝试合并它们。';
+            messages[messages.length] = '这个页面有' + YSLOW.util.plural('%num%个样式表', (css + config.max_css));
         }
         if (cssimg > 0) {
             score -= cssimg * config.points_cssimages;
-            messages[messages.length] = '这个页面有' + YSLOW.util.plural('%num%个背景图片%s%', (cssimg + config.max_cssimages)) + '.  请尝试使用CSS精灵合并它们。';
+            messages[messages.length] = '这个页面有' + YSLOW.util.plural('%num%个背景图片', (cssimg + config.max_cssimages));
         }
 
         return {
@@ -315,7 +315,7 @@ YSLOW.registerRule({
         return {
             score: score,
             message: (offenders.length > 0) ? YSLOW.util.plural(
-                '存在%num%个静态资源%s%',
+                '存在%num%个静态资源',
                 offenders.length
             ) + ' 没有设置正确的过期时间' : '',
             components: offenders
