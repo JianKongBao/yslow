@@ -143,7 +143,7 @@ yslowArgs.verbose = unaryArgs.verbose;
 urls.forEach(function (url) {
     var page = webpage.create();
 
-    page.settings.resourceTimeout = 5000;
+    page.settings.resourceTimeout = 30000;
 
     page.resources = {};
 
