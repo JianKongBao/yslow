@@ -586,7 +586,7 @@ YSLOW.registerRule({
         return {
             score: score,
             message: (domains.length > config.max_domains) ? plural(
-                '静态资源分布在%num%个域名上',
+                '静态资源分布的域名数超过%num%个',
                 config.max_domains
             ) : '',
             components: domains
