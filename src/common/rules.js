@@ -120,6 +120,10 @@ YSLOW.registerRule({
             'apis.google.com', //Google's API Hosting
             '.akamaihd.net', //Akamai - Facebook uses this for SSL assets
             '.rackcdn.com', //Generic RackSpace CloudFiles CDN
+            '.chinacache.com', 
+            '.chinanetcenter',
+            '.anquanbao.com',
+            '.jiasule.com',
             '.fastcdn.com' //帝联cdn @modify author Neeke
         ],
         // array of regexps that will be treated as exception.
@@ -538,7 +542,7 @@ YSLOW.registerRule({
 
         return {
             score: 'n/a',
-            message: '仅在你的页面是一个通用用户首页的时候考虑此选项.',
+            message: '仅在你的页面是一个通用用户首页的时候考虑此选项。',
             components: offenders
         };
     }
