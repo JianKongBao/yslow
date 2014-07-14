@@ -251,7 +251,7 @@ YSLOW.registerRule({
             message += '<p>你可以在配置中指定CDN主机' +
                 '参见<a href="javascript:document.ysview.' +
                 'openLink(\'http://yslow.org/faq/#faq_cdn\')">YSlow FAQ</a> ' +
-                '.</p>';
+                '</p>';
         }
 
         // list unique domains only to avoid long list of offenders
@@ -542,7 +542,7 @@ YSLOW.registerRule({
 
         return {
             score: 'n/a',
-            message: '仅在你的页面是一个通用用户首页的时候考虑此选项。',
+            message: '仅在你的页面是一个通用用户首页的时候考虑此选项',
             components: offenders
         };
     }
