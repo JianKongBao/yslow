@@ -134,7 +134,9 @@ YSLOW.registerRule({
         ],
         // array of regexps that match CDN Server HTTP headers
         servers: [
-            'cloudflare-nginx' // not using ^ and $ due to invisible
+            'cloudflare-nginx', // not using ^ and $ due to invisible
+            'Cdn Cache Server', //网宿CDN @modify author Steven
+            'Powered-By-ChinaCache'//蓝讯CDN @modify author Steven
         ],
         // which component types should be on CDN
         types: ['js', 'css', 'image', 'cssimage', 'flash', 'favicon']
