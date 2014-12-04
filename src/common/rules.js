@@ -136,7 +136,6 @@ YSLOW.registerRule({
         servers: [
             'cloudflare-nginx', // not using ^ and $ due to invisible
             'Cdn Cache Server', //网宿CDN @modify author Steven
-            'Powered-By-ChinaCache',//蓝讯CDN @modify author Steven
             'HIT from'//Other CDN @modify author Steven
         ],
         // which component types should be on CDN
@@ -176,7 +175,7 @@ YSLOW.registerRule({
             }
 
             // experimental custom header, use lowercase
-            match = headers['x-cdn'] || headers['x-amz-cf-id'] || headers['x-edge-location'] || headers['powered-by-chinacache'];
+            match = headers['x-cdn'] || headers['x-amz-cf-id'] || headers['x-edge-location'] || headers['powered-by-chinacache'] || headers['x-via'] || headers['x-cache'];
             if (match) {
                 continue;
             }
