@@ -175,7 +175,7 @@ YSLOW.registerRule({
             }
 
             // experimental custom header, use lowercase
-            match = headers['x-cdn'] || headers['x-amz-cf-id'] || headers['x-edge-location'] || headers['powered-by-chinacache'] || headers['x-via'] || headers['x-cache'];
+            match = headers['x-cdn'] || headers['x-amz-cf-id'] || headers['x-edge-location'] || headers['x-via'] || headers['x-cache'] || headers['powered-by-chinacache'];
             if (match) {
                 continue;
             }
